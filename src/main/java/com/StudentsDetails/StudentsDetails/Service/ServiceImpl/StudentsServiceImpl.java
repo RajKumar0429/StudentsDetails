@@ -25,12 +25,50 @@ public class StudentsServiceImpl implements StudentsService {
         Students student = studentsRepository.save(std);
 
         StudentsDto st = new StudentsDto();
-        st.setFirstName(studentsDto.getFirstName());
-        st.setLastName(studentsDto.getLastName());
-        st.setEmailId(studentsDto.getEmailId());
-        st.setContact(studentsDto.getContact());
-        st.setAddress(studentsDto.getAddress());
-        st.setDescription(studentsDto.getDescription());
+        st.setId(student.getId());
+        st.setFirstName(student.getFirstName());
+        st.setLastName(student.getLastName());
+        st.setEmailId(student.getEmailId());
+        st.setContact(student.getContact());
+        st.setAddress(student.getAddress());
+        st.setDescription(student.getDescription());
         return st;
     }
+
+    @Override
+    public String deleteStudents(long id) {
+         Students std = studentsRepository.findById(id).get();
+         studentsRepository.deleteById(id);
+
+         return "record deleted";
+
+    }
+
+    @Override
+    public StudentsDto updateStudents(long id, StudentsDto studentsDto) {
+        Students sd = studentsRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Student not found with id: " + id));
+
+        sd.setFirstName(studentsDto.getFirstName());
+        sd.setLastName(studentsDto.getLastName());
+        sd.setEmailId(studentsDto.getEmailId());
+        sd.setContact(studentsDto.getContact());
+        sd.setAddress(studentsDto.getAddress());
+        sd.setDescription(studentsDto.getDescription());
+
+        Students sde = studentsRepository.save(sd);
+
+        StudentsDto dto = new StudentsDto();
+        dto.setId(sde.getId());
+        dto.setFirstName(sde.getFirstName());
+        dto.setLastName(sde.getLastName());
+        dto.setEmailId(sde.getEmailId());
+        dto.setContact(sde.getContact());
+        dto.setAddress(sde.getAddress());
+        dto.setDescription(sde.getDescription());
+
+        return dto;
+    }
+
 }
+
